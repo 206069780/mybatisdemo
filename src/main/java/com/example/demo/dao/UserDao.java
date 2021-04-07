@@ -2,6 +2,7 @@ package com.example.demo.dao;
 
 import com.example.demo.model.User;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -37,7 +38,7 @@ public interface UserDao {
      * @param id 用户id
      * @return 返回用户bean
      */
-    public Object getUserById(int id);
+    public Object getUserById(@Param("id") int id);
 
     /**
      * 获取所有的用户数据

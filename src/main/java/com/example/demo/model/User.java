@@ -28,8 +28,17 @@ public class User implements Serializable {
     //用户性别
     private String sex;
 
+    public User() {
+    }
+
     public User(int id, String username, int age, String sex) {
         this.id = id;
+        this.username = username;
+        this.age = age;
+        this.sex = sex;
+    }
+
+    public User(String username, int age, String sex) {
         this.username = username;
         this.age = age;
         this.sex = sex;

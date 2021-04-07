@@ -36,7 +36,7 @@ public class UserServiceIml  implements UserService {
 
     @Override
     public Object getUserById(int id) {
-        return null;
+        return userDao.getUserById(id);
     }
 
     @Override
