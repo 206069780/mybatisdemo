@@ -109,8 +109,8 @@ public class UserController {
      */
     @RequestMapping(value = "getall", method = RequestMethod.GET)
     @ResponseBody
-    public List<User> getAllUsers() {
-        List<User> list =userServiceIml.getAllUsers();
+    public List<Object> getAllUsers() {
+        List<Object> list =userServiceIml.getAllUsers();
         return list;
     }
 
