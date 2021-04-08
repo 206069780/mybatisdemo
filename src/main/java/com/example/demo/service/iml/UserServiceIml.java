@@ -3,6 +3,7 @@ package com.example.demo.service.iml;
 import com.example.demo.dao.UserDao;
 import com.example.demo.model.User;
 import com.example.demo.service.UserService;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,23 +20,23 @@ import java.util.List;
  **/
 
 @Service
-public class UserServiceIml  implements UserService {
+public class UserServiceIml implements UserService {
 
     @Autowired
     UserDao userDao;
 
     @Override
-    public int saveUser(User user) {
+    public int saveUser( User user) {
         return userDao.saveUser(user);
     }
 
     @Override
-    public int removeUserById(int id) {
-        return 0;
+    public int removeUserById( int id) {
+        return userDao.removeUserById(id);
     }
 
     @Override
-    public Object getUserById(int id) {
+    public Object getUserById( int id) {
         return userDao.getUserById(id);
     }
 
@@ -46,6 +47,6 @@ public class UserServiceIml  implements UserService {
 
     @Override
     public boolean hasUserById(int id) {
-        return userDao.getUserById(id)==null?true:false;
+        return userDao.getUserById(id) == null ? true : false;
     }
 }

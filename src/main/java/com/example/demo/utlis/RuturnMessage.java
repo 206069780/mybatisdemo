@@ -16,8 +16,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class RuturnMessage {
 
-    public Object success(){
-        return new ResultBean(200,"Request succeeded");
+    public Object success(String message){
+        return new ResultBean(200,message);
     }
 
     public Object failure(String errorMessage){

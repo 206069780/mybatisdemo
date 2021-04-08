@@ -34,6 +34,7 @@ public class UserController {
 
     /**
      * 保存用户 API
+     *
      * @param request HttpServletRequest
      * @return 是否保存成功 返回值
      */
@@ -50,7 +51,7 @@ public class UserController {
         User user = new User(username, age, sex);
         try {
             userServiceIml.saveUser(user);
-            return "Code:200,message:save ok";
+            return ruturnMessage.success("用户保存成功");
         } catch (Exception e) {
             String errorMessage = String.valueOf(e);
             return errorMessage;
@@ -58,7 +59,8 @@ public class UserController {
     }
 
     /**
-     *  使用id查询用户
+     * 使用id查询用户
+     *
      * @param id 查询的id
      * @return 返回查询到底的user信息
      */
@@ -68,7 +70,7 @@ public class UserController {
         User user = null;
         try {
             user = (User) userServiceIml.getUserById(id);
-            if (user.getId()==id) {
+            if (user.getId() == id) {
                 return user;
             }
         } catch (Exception e) {
@@ -78,5 +80,28 @@ public class UserController {
         return ruturnMessage.failure("用户不存在");
     }
 
-
+    /**
+     * 根据id删除用户
+     *
+     * @param request 传递用户id
+     * @return 返回删除是否成功结果
+     */
+    @RequestMapping(value = "dele", method = RequestMethod.POST)
+    @ResponseBody
+    public Object deleteById(HttpServletRequest request) {
+        int id = Integer.parseInt(request.getParameter("id"));
+        User user = (User) userServiceIml.getUserById(id);
+        try {
+            if (user.getId() == id) {
+                if (userServiceIml.removeUserById(id) > 0) {
+                   return ruturnMessage.success("删除" + user.getUsername() + "成功");
+                } else {
+                    ruturnMessage.failure("删除失败！请过会再尝试");
+                }
+            }
+        } catch (Exception e) {
+            return ruturnMessage.failure("没有该用户");
+        }
+        return ruturnMessage.failure("没有该用户");
+    }
 }
