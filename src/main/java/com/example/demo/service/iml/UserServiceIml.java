@@ -26,27 +26,27 @@ public class UserServiceIml implements UserService {
     UserDao userDao;
 
     @Override
-    public int saveUser( User user) {
+    public int saveUser(@Param("user") User user) {
         return userDao.saveUser(user);
     }
 
     @Override
-    public int removeUserById( int id) {
+    public int removeUserById(@Param("id") int id) {
         return userDao.removeUserById(id);
     }
 
     @Override
-    public Object getUserById( int id) {
+    public Object getUserById(@Param("id") int id) {
         return userDao.getUserById(id);
     }
 
     @Override
-    public List<Object> getAllUsers() {
-        return null;
+    public List<User> getAllUsers() {
+        return userDao.getAllUsers();
     }
 
     @Override
-    public boolean hasUserById(int id) {
+    public boolean hasUserById(@Param ("id")int id) {
         return userDao.getUserById(id) == null ? true : false;
     }
 }

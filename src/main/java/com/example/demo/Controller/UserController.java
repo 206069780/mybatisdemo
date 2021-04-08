@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * @packageName: com.example.demo.Controller
@@ -33,7 +34,7 @@ public class UserController {
     RuturnMessage ruturnMessage;
 
     /**
-     * 保存用户 API
+     * 保存用户 API 采用 HttpServletRequest 接受数据
      *
      * @param request HttpServletRequest
      * @return 是否保存成功 返回值
@@ -67,21 +68,18 @@ public class UserController {
     @RequestMapping(value = "finduser", method = RequestMethod.GET)
     @ResponseBody
     public Object findUser(@RequestParam("id") int id) {
-        User user = null;
         try {
-            user = (User) userServiceIml.getUserById(id);
-            if (user.getId() == id) {
-                return user;
+            if (userServiceIml.hasUserById(id)) {
+                return  (User) userServiceIml.getUserById(id);
             }
         } catch (Exception e) {
             return ruturnMessage.failure("用户不存在");
         }
-        System.out.println(user.getSex());
         return ruturnMessage.failure("用户不存在");
     }
 
     /**
-     * 根据id删除用户
+     * 根据id删除用户 先判断id是否存在 存在在执行删除操作 ，否则返回 ”没有该用户“
      *
      * @param request 传递用户id
      * @return 返回删除是否成功结果
@@ -92,9 +90,9 @@ public class UserController {
         int id = Integer.parseInt(request.getParameter("id"));
         User user = (User) userServiceIml.getUserById(id);
         try {
-            if (user.getId() == id) {
+            if (userServiceIml.hasUserById(id)) {
                 if (userServiceIml.removeUserById(id) > 0) {
-                   return ruturnMessage.success("删除" + user.getUsername() + "成功");
+                    return ruturnMessage.success("删除" + user.getUsername() + "成功");
                 } else {
                     ruturnMessage.failure("删除失败！请过会再尝试");
                 }
@@ -104,4 +102,17 @@ public class UserController {
         }
         return ruturnMessage.failure("没有该用户");
     }
+
+    /**
+     * 获取所有的用户数据
+     * @return list<user>
+     */
+    @RequestMapping(value = "getall", method = RequestMethod.GET)
+    @ResponseBody
+    public List<User> getAllUsers() {
+        List<User> list =userServiceIml.getAllUsers();
+        return list;
+    }
+
+
 }

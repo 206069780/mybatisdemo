@@ -4,6 +4,9 @@ CREATE DATABASE mybatis_test_databse;
 
 use mybatis_test_databse;
 
+
+DROP TABLE IF EXISTS usr_table;
+
 CREATE TABLE usr_table
 (
 
