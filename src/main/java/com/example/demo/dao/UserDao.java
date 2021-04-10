@@ -44,7 +44,7 @@ public interface UserDao {
      * 获取所有的用户数据
      * @return 查询的用户数据
      */
-    public List<Object> getAllUsers();
+    public List<User> getAllUsers();
 
     /**
      * 根据id判断用户是否存在
