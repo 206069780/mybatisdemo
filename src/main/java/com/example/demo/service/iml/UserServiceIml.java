@@ -76,6 +76,6 @@ public class UserServiceIml implements UserService {
      */
     @Override
     public boolean hasUserById(@Param("id") int id) {
-        return userDao.getUserById(id) == null ? true : false;
+        return userDao.getUserById(id) == null ? false:true;
     }
 }

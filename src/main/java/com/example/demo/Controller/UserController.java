@@ -73,6 +73,7 @@ public class UserController {
                 return  (User) userServiceIml.getUserById(id);
             }
         } catch (Exception e) {
+            System.out.print(id+"e");
             return ruturnMessage.failure("用户不存在");
         }
         return ruturnMessage.failure("用户不存在");
@@ -109,8 +110,8 @@ public class UserController {
      */
     @RequestMapping(value = "getall", method = RequestMethod.GET)
     @ResponseBody
-    public List<Object> getAllUsers() {
-        List<Object> list =userServiceIml.getAllUsers();
+    public List<User> getAllUsers() {
+        List<User> list =userServiceIml.getAllUsers();
         return list;
     }
 
