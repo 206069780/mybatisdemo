@@ -42,10 +42,12 @@ public class UserController {
     @ResponseBody
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     public Object save(HttpServletRequest request) {
-
         String username = request.getParameter("username");
         String sex = request.getParameter("sex");
-        int age = Integer.parseInt(request.getParameter("age"));
+        String agestr = request.getParameter("age");
+        if (username==null ||username.equals("")||sex==null ||sex.equals("")||agestr==null ||agestr.equals("") )
+            return ruturnMessage.failure("参数出错，请检查");
+        int age = Integer.parseInt(agestr);
         if (age < 0 || age > 120) {
             return ruturnMessage.failure("年龄参数出错，请检查");
         }
@@ -54,8 +56,7 @@ public class UserController {
             userServiceIml.saveUser(user);
             return ruturnMessage.success("用户保存成功");
         } catch (Exception e) {
-            String errorMessage = String.valueOf(e);
-            return errorMessage;
+            return String.valueOf(e);
         }
     }
 
