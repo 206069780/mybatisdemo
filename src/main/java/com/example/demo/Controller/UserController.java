@@ -1,14 +1,16 @@
 package com.example.demo.Controller;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONException;
+import com.alibaba.fastjson.JSONObject;
 import com.example.demo.model.User;
 import com.example.demo.service.iml.UserServiceIml;
 import com.example.demo.utlis.RuturnMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.HttpMediaTypeNotSupportedException;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.DefaultHandlerExceptionResolver;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -41,15 +43,20 @@ public class UserController {
      */
     @ResponseBody
     @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public Object save(HttpServletRequest request) {
-        String username = request.getParameter("username");
-        String sex = request.getParameter("sex");
-        String agestr = request.getParameter("age");
-        if (username==null ||username.equals("")||sex==null ||sex.equals("")||agestr==null ||agestr.equals("") )
+    public Object save(@RequestBody JSONObject request){
+        String username;
+        String sex;
+        int age;
+        try {
+            username = (String) request.get("username");
+            sex = (String) request.get("sex");
+            age = Integer.parseInt((String) request.get("age")) ;
+        } catch (NullPointerException exception) {
+            return ruturnMessage.failure("参数不能为空，请检查");
+        }
+        System.out.println("name:"+username+",sex:"+sex+",age:"+age);
+        if (username == null || username.equals("") || sex == null || sex.equals("") || age >= 140 || age <= 0) {
             return ruturnMessage.failure("参数出错，请检查");
-        int age = Integer.parseInt(agestr);
-        if (age < 0 || age > 120) {
-            return ruturnMessage.failure("年龄参数出错，请检查");
         }
         User user = new User(username, age, sex);
         try {
@@ -71,10 +78,10 @@ public class UserController {
     public Object findUser(@RequestParam("id") int id) {
         try {
             if (userServiceIml.hasUserById(id)) {
-                return  (User) userServiceIml.getUserById(id);
+                return (User) userServiceIml.getUserById(id);
             }
         } catch (Exception e) {
-            System.out.print(id+"e");
+            System.out.print(id + "e");
             return ruturnMessage.failure("用户不存在");
         }
         return ruturnMessage.failure("用户不存在");
@@ -107,12 +114,13 @@ public class UserController {
 
     /**
      * 获取所有的用户数据
+     *
      * @return list<user>
      */
     @RequestMapping(value = "getall", method = RequestMethod.GET)
     @ResponseBody
     public List<User> getAllUsers() {
-        List<User> list =userServiceIml.getAllUsers();
+        List<User> list = userServiceIml.getAllUsers();
         return list;
     }
 

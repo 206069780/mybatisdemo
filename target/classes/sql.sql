@@ -1,4 +1,6 @@
-DROP DATABASE IF EXISTS mybatis_test_databse;
+DROP DATABASE IF EXISTS mybatis_test_databse
+CHARACTER SET utf8
+COLLATE utf8_general_ci;;
 
 CREATE DATABASE mybatis_test_databse;
 
